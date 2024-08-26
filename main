@@ -7,9 +7,12 @@ local run = game:GetService("RunService")
 
 local Utility = {}
 local Objects = {}
+
 function Kavo:DraggingEnabled(frame, parent)
-        
     parent = parent or frame
+
+    frame.Active = true
+    parent.Active = true
 
     local dragging = false
     local dragInput, mousePos, framePos
@@ -22,7 +25,7 @@ function Kavo:DraggingEnabled(frame, parent)
             
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
-                    dragging = true
+                    dragging = false
                 end
             end)
         end
@@ -37,7 +40,12 @@ function Kavo:DraggingEnabled(frame, parent)
     input.InputChanged:Connect(function(input)
         if input == dragInput and dragging then
             local delta = input.Position - mousePos
-            parent.Position  = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
+            parent.Position = UDim2.new(
+                framePos.X.Scale, 
+                framePos.X.Offset + delta.X,
+                framePos.Y.Scale, 
+                framePos.Y.Offset + delta.Y
+            )
         end
     end)
 end
